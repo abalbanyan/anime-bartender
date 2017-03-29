@@ -1,0 +1,14 @@
+{
+  "name": "anime-bartender",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies":{
+  	"discord.js":"*",
+  	"http":"*",
+  	"request": "^2.74.0",
+    "xml2js": "^0.4.17"
+  },
+  "author": "",
+  "license": "ISC"
+}
