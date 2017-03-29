@@ -3,6 +3,8 @@ const Discord = require("discord.js");
 const xml2json = require("./xml2json.js");
 const client = new Discord.Client(); // Our bot's user.
 
+// desu
+
 const Mal = require('./mal.js');
 let mal = new Mal({username: config.MAL_ID, password: config.MAL_PASS});
 mal.verifyCredentials()
