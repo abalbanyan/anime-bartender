@@ -7,7 +7,8 @@
   	"discord.js":"*",
   	"http":"*",
   	"request": "^2.74.0",
-    "xml2js": "^0.4.17"
+    "xml2js": "^0.4.17",
+    "mongodb": "*"
   },
   "author": "",
   "license": "ISC"
