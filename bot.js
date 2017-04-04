@@ -60,16 +60,18 @@ MongoClient.connect(config.MONGO_URL, function(err,db){
 			message.channel.sendMessage(config.helpText);
 		},
 		mal: function(params, message){
-			mal.searchEntry('anime', params.join(' '))
+			var title = params.join(" ");
+			mal.searchEntry('anime', title)
 			  .then(animes => {
-			    var anime = animes[0];
+			  	var anime = animes[0]? animes[0] : animes;
 			    message.channel.sendMessage(anime.title + " ― https://myanimelist.net/anime/" + anime.id);
 			  })
 			  .catch(err => console.error(err));
 
 		},
 		anime: function(params, message){
-			mal.searchEntry('anime', params.join(' '))
+			var title = params.join(" ");
+			mal.searchEntry('anime', title)
 			  .then(animes => {
 			    var anime = animes[0];
 			    message.channel.sendMessage(anime.title + " ― https://myanimelist.net/anime/" + anime.id);
@@ -170,6 +172,10 @@ MongoClient.connect(config.MONGO_URL, function(err,db){
 			if(params[0][0] == '"'){
 				id = message.member.user.id;
 			} else {
+				if(params[1][0] != '"' || params[params.length-1][params[params.length-1].length -1] != '"'){
+					message.channel.sendMessage("Please enclose your note in quotations (\" \").");
+					return;
+				}
 				var name = params[0];
 				if(name[0] == '<' && name[1] == '@'){
 					id = name.slice(2, name.length - 1);
@@ -199,9 +205,9 @@ MongoClient.connect(config.MONGO_URL, function(err,db){
 			if(tokenActive){
 				tokenActive = false;
 				collection.find({id: message.member.user.id}).toArray(function(err, choices){
-					message.channel.sendMessage(message.member.user.username + " grabbed the token! They currently have " + choices.tokens + " tokens.");
+					message.channel.sendMessage(message.member.user.username + " grabbed the token! They currently have " + choices[0].tokens + " tokens.");
 				});
-				if(!tokenID) tokenID.delete();
+				if(tokenID) tokenID.delete();
 				tokenID = null;
 
 				collection.update({ id : message.member.user.id}, {"$inc" : {"tokens" : 1}},  function(err, doc){
@@ -272,6 +278,11 @@ MongoClient.connect(config.MONGO_URL, function(err,db){
 	})
 
 	client.on('message', function(msg){
+
+		if(!msg.guild){
+			return;
+		}
+
 		// I literally learned regex to do this
 		if(msg.content.toLowerCase().match("^[a][y][y.+]")){
 			msg.channel.sendMessage(Math.random() > 0.8? "lmoa" : "lmao");
@@ -280,15 +291,15 @@ MongoClient.connect(config.MONGO_URL, function(err,db){
 			msg.channel.sendMessage("gomen gomen");
 		}
 		// Token generation
-		if(Math.random() > 0.97 && !tokenActive && msg.member.user.username != "Anime Bartender"
-		& msg.content.toLowerCase() != "!grab"){
+		if(Math.random() > 0.97 && !tokenActive && //msg.member.user.username != "Anime Bartender"
+		 msg.content.toLowerCase() != "!grab"){
 			msg.channel.sendMessage("💰")
 				.then(token => tokenID = token);
 			tokenActive = true;
 
 			setTimeout(function(){
 				tokenActive = false;
-				if(!tokenID) tokenID.delete();
+				if(tokenID) tokenID.delete();
 				tokenID = null;
 			}, 5000);
 
