@@ -205,7 +205,7 @@ MongoClient.connect(config.MONGO_URL, function(err,db){
 			if(tokenActive){
 				tokenActive = false;
 				collection.find({id: message.member.user.id}).toArray(function(err, choices){
-					message.channel.sendMessage(message.member.user.username + " grabbed the token! They currently have " + choices[0].tokens + " tokens.");
+					message.channel.sendMessage(message.member.user.username + " grabbed the token! They currently have " + (parseInt(choices[0].tokens) + 1) + " tokens.");
 				});
 				if(tokenID) tokenID.delete();
 				tokenID = null;
@@ -249,6 +249,7 @@ MongoClient.connect(config.MONGO_URL, function(err,db){
 	client.on('ready', function(){
 		console.log("Bartender online.");
 		client.user.setGame("VA-11 HALL-A");
+		//client.channels.get("296513441416478720").sendMessage("Nice profile pic, <@151554061081116672>.");
 	});
 	client.login(config.BOT_TOKEN);
 
@@ -285,7 +286,7 @@ MongoClient.connect(config.MONGO_URL, function(err,db){
 
 		// I literally learned regex to do this
 		if(msg.content.toLowerCase().match("^[a][y][y.+]")){
-			msg.channel.sendMessage(Math.random() > 0.8? "lmoa" : "lmao");
+			msg.channel.sendMessage(Math.random() > 0.8? "lmoa" : (Math.random() > 0.5? "lmao" : "elmoa"));
 		}
 		if(msg.content.toLowerCase().match("^[y][a][a.+]")){
 			msg.channel.sendMessage("gomen gomen");
