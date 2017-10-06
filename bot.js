@@ -288,6 +288,9 @@ MongoClient.connect(config.MONGO_URL, function(err,db){
 		if(msg.content.toLowerCase().match("^[a][y][y.+]")){
 			msg.channel.sendMessage(Math.random() > 0.8? "lmoa" : (Math.random() > 0.5? "lmao" : "elmoa"));
 		}
+		if(msg.content.toLowerCase().match("^o\/") && msg.member.user.id != this.user.id /* it'll recurse otherwise */){
+			msg.channel.sendMessage("o/");
+		}
 		if(msg.content.toLowerCase().match("^[y][a][a.+]")){
 			msg.channel.sendMessage("gomen gomen");
 		}
