@@ -4,6 +4,8 @@ const xml2json = require("./xml2json.js");
 const client = new Discord.Client(); // Our bot's user.
 const MongoClient = require('mongodb').MongoClient;
 
+const googleTranslate = require('google-translate')(config.googleAPIKey);
+
 
 const Mal = require('./mal.js');
 let mal = new Mal({username: config.MAL_ID, password: config.MAL_PASS});
@@ -244,6 +246,18 @@ MongoClient.connect(config.MONGO_URL, function(err,db){
 				if(err) console.log("Error occured updating strike.");
 			});
 		},
+		idontspeakweeb: function(params, message) {
+			// May want to switch out message.content with params.
+			googleTranslate.detectLanguage(message.content, function(err, detection) {
+			  if (detection.language != 'jp') {
+			  	message.sendMessage("Dat ain't weeb son.");
+			  } else {
+			  	googleTranslate.translate(message.content, 'en', function(err, translation) {
+				  message.reply(translation.translatedText);
+				});
+			  }
+			});
+		}
 	}
 
 	client.on('ready', function(){
