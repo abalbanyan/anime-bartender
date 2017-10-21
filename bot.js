@@ -312,7 +312,7 @@ MongoClient.connect(config.MONGO_URL, function(err,db){
 		// Token generation
 		if(Math.random() > 0.97 && !tokenActive && //msg.member.user.username != "Anime Bartender"
 		 msg.content.toLowerCase() != "!grab"){
-			msg.channel.sendMessage("💰")
+			msg.channel.sendMessage("📀")
 				.then(token => tokenID = token);
 			tokenActive = true;
 
