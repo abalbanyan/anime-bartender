@@ -1,4 +1,9 @@
-const config = require("./config.js");
+try {
+	const config = require("./config.js");
+} catch (e) {
+	console.log("Error: no config file found. The config file contains private API keys required for MAL and MongoDB functionality.");
+	return;
+}
 const Discord = require("discord.js");
 const xml2json = require("./xml2json.js");
 const client = new Discord.Client(); // Our bot's user.
