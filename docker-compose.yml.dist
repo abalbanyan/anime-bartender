@@ -1,0 +1,22 @@
+version: '2'
+services:
+  waifu-bot:  
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - MAL_ID=
+      - MAL_PASS=
+      - MONGO_URL=
+      - HELP_TEXT=
+      - BOT_TOKEN=
+    volumes:
+      - ./src:/src
+    links:
+      - mongo:mongo
+  mongo:  
+    image: mongo:3.4
+    environment:
+      - storageEngine:wiredTiger
+    ports:
+      - "27045:27017"
