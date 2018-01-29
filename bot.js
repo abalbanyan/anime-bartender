@@ -282,7 +282,7 @@ MongoClient.connect(config.MONGO_URL, function(err,db){
 		}
 		if(status == "online" || status == "offline"){ // Update the user's data.
 			collection.find({id: newMember.user.id}).toArray(function(err, choices){
-				if(choices.length != 0){
+				if(choices && choices.length != 0){
 					collection.update({id: newMember.user.id}, {$set: {lastonline: new Date()}});
 					if(choices[0].name != newMember.user.username){
 						collection.update({id: newMember.user.id}, {$set: {name: newMember.user.username}});
